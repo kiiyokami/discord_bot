@@ -20,11 +20,15 @@ func Run(token string) {
 	checkError(err)
 
 	discord.AddHandler(MessageHandler)
+	discord.AddHandler(CommandsHandler)
 
-	discord.Identify.Intents = discordgo.IntentsGuildMessages
+	discord.Identify.Intents = discordgo.IntentsGuildMessages | discordgo.IntentsMessageContent
 
 	err = discord.Open()
 	checkError(err)
+
+	// Register slash commands
+	RegisterCommands(discord)
 
 	defer discord.Close()
 
