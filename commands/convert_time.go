@@ -13,7 +13,7 @@ func ConvertTime(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	message := "❌ Incorrect country. Please check the country name."
 	if success {
-		message = fmt.Sprintf("🕐 **Base Time:** %02d:%02d → **%s Time:** %02d:%02d", opts[0].IntValue(), opts[1].IntValue(), opts[2].StringValue(), hour, minute)
+		message = fmt.Sprintf("🕐 **UTC Time:** %02d:%02d → **%s Time:** %02d:%02d", opts[0].IntValue(), opts[1].IntValue(), opts[2].StringValue(), hour, minute)
 	}
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{

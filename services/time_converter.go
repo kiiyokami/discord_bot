@@ -1,38 +1,29 @@
 package services
 
-var timezones = map[string]int8{
+var offsets = map[string]int16{
 	"Ireland": 0, "Portugal": 0, "United Kingdom": 0,
-	"Albania": 1, "Austria": 1, "Belgium": 1, "Bosnia": 1, "France": 1, "Germany": 1, "Italy": 1, "Netherlands": 1, "Norway": 1, "Poland": 1, "Serbia": 1, "Slovakia": 1, "Slovenia": 1, "Spain": 1, "Sweden": 1, "Switzerland": 1,
-	"Croatia": 2, "Czechia": 2, "Denmark": 2, "Egypt": 2, "Hungary": 2, "South Africa": 2,
-	"Belarus": 3, "Bulgaria": 3, "Estonia": 3, "Finland": 3, "Greece": 3, "Latvia": 3, "Lithuania": 3, "Romania": 3, "Russia": 3, "Turkey": 3, "Ukraine": 3,
-	"Chile": -4, "Dominican Republic": -4,
-	"Colombia": -5, "Peru": -5,
-	"Mexico":   -6,
-	"Cambodia": 7, "Indonesia": 7, "Thailand": 7, "Vietnam": 7,
-	"China": 8, "Hong Kong": 8, "Malaysia": 8, "Singapore": 8, "Taiwan": 8, "Philippines": 8,
-	"Japan": 9, "Korea": 9,
-	"Australia":   10,
-	"New Zealand": 12,
-	"USA":         -8,
-	"Argentina":   -3, "Brazil": -3,
+	"Albania": 60, "Austria": 60, "Belgium": 60, "Bosnia": 60, "France": 60, "Germany": 60, "Italy": 60, "Netherlands": 60, "Norway": 60, "Poland": 60, "Serbia": 60, "Slovakia": 60, "Slovenia": 60, "Spain": 60, "Sweden": 60, "Switzerland": 60,
+	"Croatia": 120, "Czechia": 120, "Denmark": 120, "Egypt": 120, "Hungary": 120, "South Africa": 120,
+	"Belarus": 180, "Bulgaria": 180, "Estonia": 180, "Finland": 180, "Greece": 180, "Latvia": 180, "Lithuania": 180, "Romania": 180, "Russia": 180, "Turkey": 180, "Ukraine": 180,
+	"Chile": -240, "Dominican Republic": -240,
+	"Colombia": -300, "Peru": -300,
+	"Mexico":   -360,
+	"Cambodia": 420, "Indonesia": 420, "Thailand": 420, "Vietnam": 420,
+	"China": 480, "Hong Kong": 480, "Malaysia": 480, "Singapore": 480, "Taiwan": 480, "Philippines": 480,
+	"Japan": 540, "Korea": 540,
+	"Australia":   600,
+	"New Zealand": 720,
+	"USA":         -480,
+	"Argentina":   -180, "Brazil": -180,
+	"India": 330, "Canada": -210,
 }
 
-var specialOffsets = map[string]int16{"India": 330, "Canada": -210}
-
 func TimeConverter(hour, minute int, country string) (int, int, bool) {
-	var offsetMinutes int16
-	if special, exists := specialOffsets[country]; exists {
-		offsetMinutes = special
-	} else if offset, exists := timezones[country]; exists {
-		offsetMinutes = int16(offset) * 60
-	} else {
+	offset, exists := offsets[country]
+	if !exists {
 		return 0, 0, false
 	}
-	totalMinutes := int16(hour*60+minute) + offsetMinutes
-	if totalMinutes < 0 {
-		totalMinutes += 1440
-	} else if totalMinutes >= 1440 {
-		totalMinutes -= 1440
-	}
-	return int(totalMinutes / 60), int(totalMinutes % 60), true
+	total := int16(hour*60+minute) + offset
+	total = (total%1440 + 1440) % 1440
+	return int(total / 60), int(total % 60), true
 }
