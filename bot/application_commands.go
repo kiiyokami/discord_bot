@@ -1,9 +1,10 @@
 package bot
 
 import (
-	"log"
-	"github.com/bwmarrin/discordgo"
 	"discord_bot/commands"
+	"log"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var CommandsList = []*discordgo.ApplicationCommand{
@@ -31,6 +32,24 @@ var CommandsList = []*discordgo.ApplicationCommand{
 			},
 		},
 	},
+	{
+		Name:        "fetch-image",
+		Description: "Fetches a random image",
+		Options: []*discordgo.ApplicationCommandOption{
+			{
+				Type:        discordgo.ApplicationCommandOptionString,
+				Name:        "image",
+				Description: "The folder to search for",
+				Required:    true,
+				Choices: []*discordgo.ApplicationCommandOptionChoice{
+					{
+						Name:  "Milkteaism",
+						Value: "milktea",
+					},
+				},
+			},
+		},
+	},
 }
 
 func RegisterCommands(s *discordgo.Session) {
@@ -46,7 +65,8 @@ func CommandsHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	switch i.ApplicationCommandData().Name {
 	case "convert-time":
 		commands.ConvertTime(s, i)
+	case "fetch-image":
+		commands.FetchImage(s, i)
 	}
+
 }
-
-
