@@ -1,6 +1,6 @@
 # Discord Bot
 
-- This is a discord bot made in Go Languages
+- discord bot made in Go using bwmarrin/discordgo
 
 ### Current Features
 
