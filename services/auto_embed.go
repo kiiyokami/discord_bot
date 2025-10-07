@@ -10,6 +10,7 @@ var domainMap = map[string]string{
 	"twitter.com":   "fxtwitter.com",
 	"reddit.com":    "rxddit.com",
 	"imgur.com":     "s.imgur.com",
+	"facebook.com":  "facebed.com",
 }
 
 func AutoEmbed(urlStr string) string {
