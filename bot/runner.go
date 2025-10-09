@@ -27,7 +27,6 @@ func Run(token string) {
 	err = discord.Open()
 	checkError(err)
 
-	// Register slash commands
 	RegisterCommands(discord)
 
 	defer discord.Close()

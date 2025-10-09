@@ -4,29 +4,20 @@ import (
 	"discord_bot/services"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
 
-func respond(s *discordgo.Session, i *discordgo.InteractionCreate, content string, files []*discordgo.File) {
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{Content: content, Files: files},
-	})
-}
-
-func FetchImage(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	path := fmt.Sprintf("public/%s", i.ApplicationCommandData().Options[0].StringValue())
-	imagePath, err := services.RandomImageFetcher(path)
-	if err != nil {
-		respond(s, i, "No image found", nil)
-		return
+func FetchImage(s *discordgo.Session, m *discordgo.MessageCreate) {
+	path := fmt.Sprintf("public/%s", strings.ToLower(m.Content))
+	if _, err := os.Stat(path); err == nil {
+		imagePath, _ := services.RandomImageFetcher(path)
+		absPath := fmt.Sprintf("public/%s/%s", strings.ToLower(m.Content), imagePath)
+		file, _ := os.Open(absPath)
+		defer file.Close()
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Files: []*discordgo.File{{Name: imagePath, Reader: file}},
+		})
 	}
-	file, err := os.Open(fmt.Sprintf("%s/%s", path, imagePath))
-	if err != nil {
-		respond(s, i, "Error opening image", nil)
-		return
-	}
-	defer file.Close()
-	respond(s, i, "", []*discordgo.File{{Name: imagePath, Reader: file}})
 }
