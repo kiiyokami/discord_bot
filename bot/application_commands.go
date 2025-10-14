@@ -43,9 +43,14 @@ func RegisterCommands(s *discordgo.Session) {
 	}
 }
 
-func CommandsHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	switch i.ApplicationCommandData().Name {
-	case "convert-time":
-		commands.ConvertTime(s, i)
+func InteractionHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	switch i.Type {
+	case discordgo.InteractionApplicationCommand:
+		switch i.ApplicationCommandData().Name {
+		case "convert-time":
+			commands.ConvertTime(s, i)
+		}
+	case discordgo.InteractionMessageComponent:
+		commands.HandleDelete(s, i)
 	}
 }

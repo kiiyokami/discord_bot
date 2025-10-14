@@ -3,8 +3,8 @@ package services
 import "strings"
 
 var domainMap = map[string]string{
-	"instagram.com": "ddinstagram.com",
-	"pixiv.com":     "phixiv.net",
+	"instagram.com": "kkinstagram.com",
+	"pixiv.net":     "phixiv.net",
 	"x.com":         "fixupx.com",
 	"tiktok.com":    "vxtiktok.com",
 	"twitter.com":   "fxtwitter.com",

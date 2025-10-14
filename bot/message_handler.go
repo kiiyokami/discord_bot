@@ -13,3 +13,4 @@ func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	commands.AutoEmbedder(s, m)
 	commands.FetchImage(s,m)
 }
+

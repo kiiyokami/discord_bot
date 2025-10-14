@@ -20,7 +20,7 @@ func Run(token string) {
 	checkError(err)
 
 	discord.AddHandler(MessageHandler)
-	discord.AddHandler(CommandsHandler)
+	discord.AddHandler(InteractionHandler)
 
 	discord.Identify.Intents = discordgo.IntentsGuildMessages | discordgo.IntentsMessageContent
 
